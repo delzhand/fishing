@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = System.Random;
 
 public class FishMovement : MonoBehaviour
 {
@@ -16,8 +15,10 @@ public class FishMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        random = new Random();
-        moveDirection = new Vector2(random.Next(1), random.Next(1));
+        timer = -Random.Range(0, 3f);
+        moveDirection = new Vector2(Random.Range(0, 1f), Random.Range(0, 1f));
+        idleDuration = 3 + Random.Range(0, 3f);
+        movingDuration = 1 + Random.Range(0, 1f);
     }
 
     // Update is called once per frame
@@ -34,7 +35,9 @@ public class FishMovement : MonoBehaviour
         {
             isMoving = false;
             timer -= (idleDuration + movingDuration);
-            moveDirection = new Vector2(random.Next(1), random.Next(1));
+            moveDirection = new Vector2(Random.Range(0, 1f), Random.Range(0, 1f));
+            idleDuration = 3 + Random.Range(0, 3f);
+            movingDuration = 1 + Random.Range(0, 1f);
         }
     }
 }
