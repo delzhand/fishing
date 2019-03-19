@@ -6,6 +6,7 @@ public enum FishingMode
 {
   waiting,
   casting,
+  throwing,
   reeling,
   fighting
 }

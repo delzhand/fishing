@@ -30,11 +30,18 @@ public class MiddleButton : MonoBehaviour
                     else if (player.GetComponent<InputManager>().mode == FishingMode.casting)
                     {
                         GameObject.Find("Power Meter").GetComponent<PowerMeter>().StopMeter();
-                        player.GetComponent<InputManager>().mode = FishingMode.casting;
+                        player.GetComponent<InputManager>().mode = FishingMode.throwing;
                         float power = GameObject.Find("Power Meter").GetComponent<PowerMeter>().value;
                         GameObject.Find("Lure").GetComponent<Lure>().ThrowLure(power);
                     }
                 }
+            }
+        }
+        else if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Stationary))
+        {
+            if (player.GetComponent<InputManager>().mode == FishingMode.reeling)
+            {
+                GameObject.Find("Lure").GetComponent<Lure>().ReelIn();
             }
         }
 
