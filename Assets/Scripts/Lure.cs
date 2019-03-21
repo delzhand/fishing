@@ -8,35 +8,36 @@ public class Lure : MonoBehaviour
     public float timer;
     public float distance;
     public Vector3 startPosition;
-    private GameObject player;
+    private FishingManager fishingManager;
 
     // Start is called before the first frame update
     void Start()
     {
         startPosition = transform.position;
-        player = GameObject.Find("Player");
-        transform.Find("Ripples").GetComponent<ParticleSystem>().Stop();
+        fishingManager = GameObject.Find("Game").GetComponent<FishingManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (timer > 0)
+        switch(fishingManager.Mode)
         {
-            timer -= Time.deltaTime;
-            if (timer < 0)
-            {
-                timer = 0;
-                player.GetComponent<InputManager>().mode = FishingMode.reeling;
-                transform.Find("Ripples").GetComponent<ParticleSystem>().Play();
-            }
+            case FishingMode.throwing:
+                timer -= Time.deltaTime;
+                if (timer < 0)
+                {
+                    timer = 0;
+                    fishingManager.Mode = FishingMode.reeling;
+                    transform.Find("Ripples").GetComponent<ParticleSystem>().Play();
+                }
 
-            float percent = timer / maxTimer;
-            Vector3 newPosition = startPosition;
-            newPosition.z += distance * (1 - percent);
-            newPosition.y = startPosition.y * Mathf.Cos(Mathf.Pow(1 - percent, 2) * Mathf.PI / 2);
-            transform.position = newPosition;
-            GameObject.Find("Camera Rig").transform.position = new Vector3(0, 0, transform.position.z);
+                float percent = timer / maxTimer;
+                Vector3 newPosition = startPosition;
+                newPosition.z += distance * (1 - percent);
+                newPosition.y = startPosition.y * Mathf.Cos(Mathf.Pow(1 - percent, 2) * Mathf.PI / 2);
+                transform.position = newPosition;
+                GameObject.Find("Camera Rig").transform.position = new Vector3(0, 0, transform.position.z);
+                break;
         }
     }
 
@@ -57,8 +58,10 @@ public class Lure : MonoBehaviour
         if (Vector3.Distance(target, transform.position) < .1f)
         {
             transform.position = startPosition;
-            player.GetComponent<InputManager>().mode = FishingMode.waiting;
+            fishingManager.Mode = FishingMode.waiting;
             transform.Find("Ripples").GetComponent<ParticleSystem>().Stop();
+            fishingManager.InputObject.Reject();
+            timer = 0;
         }
     }
 }
