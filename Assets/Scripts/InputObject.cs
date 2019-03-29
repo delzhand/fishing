@@ -7,6 +7,12 @@ public class InputObject : MonoBehaviour
     public float inputDuration = 0;
     public bool receiving = false;
     public bool DebugOutput = false;
+    protected FishingManager fishingManager;
+
+    public virtual void Start()
+    {
+        fishingManager = GameObject.Find("Game").GetComponent<FishingManager>();
+    }
 
     public void OnMouseDown()
     {
@@ -32,6 +38,7 @@ public class InputObject : MonoBehaviour
     public virtual void Receive()
     {
         receiving = true;
+        transform.Find("Surface").GetComponent<MeshRenderer>().material.color = Color.green;
         inputDuration = 0;
         if (DebugOutput)
         {
@@ -42,6 +49,7 @@ public class InputObject : MonoBehaviour
     public virtual void Reject()
     {
         receiving = false;
+        transform.Find("Surface").GetComponent<MeshRenderer>().material.color = Color.white;
         if (DebugOutput)
         {
             Debug.Log(name + " active for " + inputDuration);
@@ -54,5 +62,10 @@ public class InputObject : MonoBehaviour
         {
             inputDuration += Time.deltaTime;
         }
+    }
+
+    public bool Receiving()
+    {
+        return receiving;
     }
 }

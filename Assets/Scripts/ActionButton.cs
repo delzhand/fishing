@@ -2,20 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MiddleButton : InputObject
+public class ActionButton : InputObject
 {
-    private FishingManager fishingManager;
 
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
-        fishingManager = GameObject.Find("Game").GetComponent<FishingManager>();
+        base.Start();
     }
 
     public override void Receive()
     {
         base.Receive();
-        fishingManager.InputObject = this;
         switch (fishingManager.Mode)
         {
             case FishingMode.waiting:

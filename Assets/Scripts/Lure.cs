@@ -7,6 +7,7 @@ public class Lure : MonoBehaviour
     public float maxTimer;
     public float timer;
     public float distance;
+    public float CurrentDistance;
     public Vector3 startPosition;
     private FishingManager fishingManager;
 
@@ -31,14 +32,28 @@ public class Lure : MonoBehaviour
                     transform.Find("Ripples").GetComponent<ParticleSystem>().Play();
                 }
 
+                float horizontal = 0;
+                if (fishingManager.LeftButton.Receiving())
+                {
+                    horizontal -= 1;
+                }
+                if (fishingManager.RightButton.Receiving())
+                {
+                    horizontal += 1;
+                }
+
                 float percent = timer / maxTimer;
                 Vector3 newPosition = startPosition;
+                newPosition.x += transform.position.x + (horizontal * .01f);
                 newPosition.z += distance * (1 - percent);
                 newPosition.y = startPosition.y * Mathf.Cos(Mathf.Pow(1 - percent, 2) * Mathf.PI / 2);
                 transform.position = newPosition;
                 GameObject.Find("Camera Rig").transform.position = new Vector3(0, 0, transform.position.z);
                 break;
         }
+
+        Vector3 target = new Vector3(startPosition.x, 0, startPosition.z);
+        CurrentDistance = Vector3.Distance(target, transform.position);
     }
 
     public void ThrowLure(float power)
@@ -60,7 +75,7 @@ public class Lure : MonoBehaviour
             transform.position = startPosition;
             fishingManager.Mode = FishingMode.waiting;
             transform.Find("Ripples").GetComponent<ParticleSystem>().Stop();
-            fishingManager.InputObject.Reject();
+            fishingManager.ActionButton.Reject();
             timer = 0;
         }
     }

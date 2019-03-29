@@ -14,7 +14,7 @@ public class FishGenerator : MonoBehaviour
             startPosition.x = Random.Range(-15f, 15f);
             startPosition.y = -Random.Range(0, 3) - .1f;
             startPosition.z = Random.Range(0f, 50f);
-            GameObject.Instantiate(Resources.Load("Prefabs/Fish"), startPosition, Quaternion.identity);
+            GameObject.Instantiate(Resources.Load("Prefabs/Fish"), startPosition, Quaternion.Euler(90, 0, 0));
         }
     }
 
