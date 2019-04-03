@@ -11,6 +11,7 @@ public class FishMovement : MonoBehaviour
     public float movingDuration = 1;
     public Vector2 moveDirection = Vector2.zero;
     private Random random;
+    private FishingManager fishingManager;
 
     // Start is called before the first frame update
     void Start()
@@ -19,25 +20,33 @@ public class FishMovement : MonoBehaviour
         moveDirection = new Vector2(Random.Range(0, 1f), Random.Range(0, 1f));
         idleDuration = 3 + Random.Range(0, 3f);
         movingDuration = 1 + Random.Range(0, 1f);
+        fishingManager = GameObject.Find("Game").GetComponent<FishingManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer > idleDuration)
+        if (transform.GetComponent<Fish>().fighting)
         {
-            isMoving = true;
-            gameObject.transform.localPosition += new Vector3(moveDirection.x, 0, moveDirection.y) * Time.deltaTime;
-
+            Vector3 newPosition = fishingManager.Lure.transform.position;
         }
-        if (timer > (idleDuration + movingDuration))
+        else
         {
-            isMoving = false;
-            timer -= (idleDuration + movingDuration);
-            moveDirection = new Vector2(Random.Range(0, 1f), Random.Range(0, 1f));
-            idleDuration = 3 + Random.Range(0, 3f);
-            movingDuration = 1 + Random.Range(0, 1f);
+            timer += Time.deltaTime;
+            if (timer > idleDuration)
+            {
+                isMoving = true;
+                gameObject.transform.localPosition += new Vector3(moveDirection.x, 0, moveDirection.y) * Time.deltaTime;
+
+            }
+            if (timer > (idleDuration + movingDuration))
+            {
+                isMoving = false;
+                timer -= (idleDuration + movingDuration);
+                moveDirection = new Vector2(Random.Range(0, 1f), Random.Range(0, 1f));
+                idleDuration = 3 + Random.Range(0, 3f);
+                movingDuration = 1 + Random.Range(0, 1f);
+            }
         }
     }
 }

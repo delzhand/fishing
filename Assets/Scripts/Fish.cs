@@ -22,6 +22,8 @@ public class Fish : MonoBehaviour
     public int size;
     public FishType fishType;
     public float speed = 1;
+    private FishingManager fishingManager;
+    public bool fighting = false;
 
     void InitFish()
     {
@@ -37,10 +39,16 @@ public class Fish : MonoBehaviour
     void Start()
     {
         InitFish();
+        fishingManager = GameObject.Find("Game").GetComponent<FishingManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (fishingManager.Mode == FishingMode.reeling && Vector3.Distance(transform.position, fishingManager.Lure.transform.position) < 5) {
+            fishingManager.Mode = FishingMode.fighting;
+            fighting = true;
+            Debug.Log("Hooked a " + fishType.ToString() + "!");
+        }
     }
 }
