@@ -45,10 +45,10 @@ public class Fish : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (fishingManager.Mode == FishingMode.reeling && Vector3.Distance(transform.position, fishingManager.Lure.transform.position) < 5) {
-            fishingManager.Mode = FishingMode.fighting;
-            fighting = true;
-            Debug.Log("Hooked a " + fishType.ToString() + "!");
-        }
+        //if (fishingManager.Mode == FishingMode.reeling && Vector3.Distance(transform.position, fishingManager.Lure.transform.position) < 5) {
+        //    fishingManager.Mode = FishingMode.fighting;
+        //    fighting = true;
+        //    Debug.Log("Hooked a " + fishType.ToString() + "!");
+        //}
     }
 }

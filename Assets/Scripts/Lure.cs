@@ -10,12 +10,14 @@ public class Lure : MonoBehaviour
     public float CurrentDistance;
     public Vector3 startPosition;
     private FishingManager fishingManager;
+    private LureTarget lureTarget;
 
     // Start is called before the first frame update
     void Start()
     {
         startPosition = transform.position;
         fishingManager = GameObject.Find("Game").GetComponent<FishingManager>();
+        lureTarget = GameObject.Find("LureTarget").GetComponent<LureTarget>();
     }
 
     // Update is called once per frame
@@ -50,6 +52,21 @@ public class Lure : MonoBehaviour
                 transform.position = newPosition;
                 GameObject.Find("Camera Rig").transform.position = new Vector3(0, 0, transform.position.z);
                 break;
+            case FishingMode.reeling:
+                float offset = 0;
+                if (fishingManager.LeftButton.Receiving())
+                {
+                    offset -= 1;
+                }
+                if (fishingManager.RightButton.Receiving())
+                {
+                    offset += 1;
+                }
+                lureTarget.transform.position = new Vector3(offset * 2, 0, 0);
+                break;
+            default:
+                lureTarget.transform.position = new Vector3(0, 0, 0);
+                break;
         }
 
         Vector3 target = new Vector3(startPosition.x, 0, startPosition.z);
@@ -66,7 +83,7 @@ public class Lure : MonoBehaviour
     public void ReelIn()
     {
         float step = 5f * Time.deltaTime;
-        Vector3 target = new Vector3(startPosition.x, 0, startPosition.z);
+        Vector3 target = lureTarget.transform.position;
         transform.position = Vector3.MoveTowards(transform.position, target, step);
         GameObject.Find("Camera Rig").transform.position = new Vector3(0, 0, transform.position.z);
 
